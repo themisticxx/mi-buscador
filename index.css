@@ -29,20 +29,46 @@ input:hover{
     transform: scale(1.02);
 }
 
-.card{
+/* Centra todo en la pantalla */
+#contenedor {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #333333;
-    margin: 10px;
-    border-radius: 20px;
-    transition: transform 0.3s;
-    height: 300px;
-    width: 23%;
-    box-shadow: 3px 2px rgb(112, 112, 112) ;
-   
-    
+    align-items: center; /* Centra las cards hijos */
+    width: 100%;
+    max-width: 800px;    /* Un poco más ancho para que luzca mejor */
+    margin: 0 auto;      /* Centra el contenedor en el body */
+    padding-bottom: 150px; 
+}
+
+.card {
+    display: flex;
+    flex-direction: row; /* Imagen a la izquierda, texto a la derecha */
+    align-items: center; 
+    background: #252525;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    width: 90%; 
+    height: 180px;      /* Altura fija más estética para listas de música */
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #444;
+}
+
+.Imagen {
+    height: 140px;      /* Tamaño más controlado */
+    width: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-left: 15px;
+    border: none;
+}
+
+/* Contenedor para los textos (puedes meter títulos y artistas aquí) */
+.info-musica {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    color: white;
 }
 .card:hover{
     background: #505050;
@@ -55,7 +81,8 @@ input:hover{
 
 .Imagen{
     
-    width: 90%;
+    width: 30%;
+    height: 50%;
     border: 2px rgb(158, 158, 158) solid;
     border-radius: 20px;
     margin: 10px;
@@ -75,19 +102,12 @@ input:hover{
     align-items: center;
 }
 
-#contenedor{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    
-}
+
 
 .audi{
     display: flex;
     flex-direction: column;
-    width: 2000px;
+    width: 100%;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -97,9 +117,9 @@ input:hover{
     height: 50px;
     /* Estilos extra para que se vea */
     background-color: #555555;
-    height: 100px;
+    height: 15%;
     
-    padding: 10px 20px;
+    padding: 3px 20px;
     border-radius: 5px;
   
     
