@@ -1,0 +1,106 @@
+body{
+    background-color: #161616;
+}
+
+audio {
+    filter: invert(100%) hue-rotate(180deg) brightness(1.5);
+    /* Invert(100%) lo hace blanco si era negro (o viceversa) */
+    /* hue-rotate cambia el tono si quieres un color específico */
+    
+    width: 100%;
+    max-width: 600px;
+    height: 35px;
+}
+#formulario-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#input{
+    width: 60%;
+    padding: 13px;
+    border: 4px solid rgb(161, 160, 160);
+    border-radius: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    transition: transform 0.4s;
+}
+input:hover{
+    transform: scale(1.02);
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #333333;
+    margin: 10px;
+    border-radius: 20px;
+    transition: transform 0.3s;
+    height: 300px;
+    width: 23%;
+    box-shadow: 3px 2px rgb(112, 112, 112) ;
+   
+    
+}
+.card:hover{
+    background: #505050;
+    transform: scale(1.09);
+}
+.card:active{
+    transform: scale(0.9);
+}
+
+
+.Imagen{
+    
+    width: 90%;
+    border: 2px rgb(158, 158, 158) solid;
+    border-radius: 20px;
+    margin: 10px;
+
+}
+
+.titulos{
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}
+.artistas{
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}
+
+#contenedor{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.audi{
+    display: flex;
+    flex-direction: column;
+    width: 2000px;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;       /* Distancia desde el borde inferior */
+    left: 50%;          /* Lo mueve al centro horizontalmente */
+    transform: translateX(-50%); /* Lo ajusta exactamente a su propio centro */
+    height: 50px;
+    /* Estilos extra para que se vea */
+    background-color: #555555;
+    height: 100px;
+    
+    padding: 10px 20px;
+    border-radius: 5px;
+  
+    
+}
