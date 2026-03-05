@@ -4,13 +4,54 @@ const contenedor = document.getElementById('contenedor')
 const audio=document.getElementById('audio')
 const a=document.getElementById('cancion')
 const API='https://auraproyect.share.zrok.io'
+const Play=document.getElementById('play')
+const Volumen=document.getElementById('volumen')
+
+const Index=[]
+
+let contador=1
+
+audio.addEventListener('ended',(e)=>{
+    fetch(`${API}/get_url?id=${Index[contador]}`)
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data.url)
+            audio.src=data.url
+            audio.play()
+            contador=contador+1
+            
+        })
 
 
+    
+    
+})
+
+Volumen.addEventListener('input',(e)=>{
+    const valor=e.target.value;
+    audio.volume=valor/100
+})
+
+let reproduccion=true
+Play.addEventListener('click',()=>{
+    if (reproduccion==true){
+        audio.pause()
+        reproduccion=false
+        
+    }
+    else{
+        audio.play()
+        reproduccion=true
+    }
+    
+
+})
 
 function Targetas(nombre, imagen, artista,id) {
     const card = document.createElement('div')
     card.className = 'card'
     card.onclick=()=>{
+       
         fetch(`${API}/get_url?id=${id}`)
         .then(res=>res.json())
         .then(data=>{
@@ -19,6 +60,15 @@ function Targetas(nombre, imagen, artista,id) {
             audio.play()
             a.innerText=`${nombre}--${artista}`
             
+        })
+
+        fetch(`${API}/recommendations`)
+        .then(res=>res.json())
+        .then(data=>{
+
+            for (i of data){
+                Index.push(i.videoId)
+           }
         })
         
     }

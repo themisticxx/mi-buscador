@@ -4,8 +4,6 @@ body{
 
 audio {
     filter: invert(100%) hue-rotate(180deg) brightness(1.5);
-    /* Invert(100%) lo hace blanco si era negro (o viceversa) */
-    /* hue-rotate cambia el tono si quieres un color específico */
     
     width: 100%;
     max-width: 600px;
@@ -16,51 +14,87 @@ audio {
     justify-content: center;
     align-items: center;
 }
-#input{
-    width: 100%;
-    padding: 13px;
-    border: 4px solid rgb(161, 160, 160);
-    border-radius: 20px;
+#input {
+    width: 80%; /* Un poco más estrecho para que respire mejor */
+    max-width: 600px;
+    padding: 14px 25px; /* Más espacio a los lados para el texto */
+    
+    /* Colores estilo Dark Mode */
+    background-color: #282828; 
+    color: white;
+    
+    /* Bordes más finos y elegantes */
+    border: 1px solid #404040;
+    border-radius: 30px; /* Bordes bien redondeados */
+    
+    /* Espaciado */
     margin-bottom: 30px;
     margin-top: 20px;
-    transition: transform 0.4s;
+    
+    /* Tipografía */
+    font-size: 16px;
+    outline: none; /* Quita el borde azul que pone el navegador por defecto */
+    transition: all 0.3s ease;
+    background-color: #5a5a5a;
 }
-input:hover{
-    transform: scale(1.02);
+
+/* Efecto cuando pasas el mouse */
+#input:hover {
+    background-color: #333333;
+    border-color: #555555;
+    transform: scale(1.03); /* Pequeño salto hacia arriba */
+}
+
+/* Efecto cuando haces clic para escribir (Focus) */
+#input:focus {
+    background-color: #121212;
+    border-color: #1DB954; /* El verde de Spotify que ya estás usando */
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.3); /* Resplandor verde suave */
+}
+
+/* Estilo para el texto de ayuda (placeholder) */
+#input::placeholder {
+    color: #b3b3b3;
+    font-style: italic;
 }
 
 /* Centra todo en la pantalla */
 #contenedor {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center; /* Centra las cards hijos */
-    width: 100%;
-    max-width: 800px;    /* Un poco más ancho para que luzca mejor */
-    margin: 0 auto;      /* Centra el contenedor en el body */
-    padding-bottom: 150px; 
+    width: 95%;
+    justify-content: center;
+    margin: 20px auto;
+    gap: 20px;
+    padding-bottom: 150px;
 }
 
 .card {
     display: flex;
-    flex-direction: row; /* Imagen a la izquierda, texto a la derecha */
+    flex-direction: column;
     align-items: center; 
     background: #252525;
-    margin-bottom: 20px;
     border-radius: 15px;
-    width: 90%; 
-    height: 180px;      /* Altura fija más estética para listas de música */
+    width: calc(33.333% - 20px); 
+    min-width: 280px; /* Para que en pantallas muy pequeñas no se aplasten demasiado */
+    
+    box-sizing: border-box; /* Cambia el % por un tamaño fijo en pixeles */
+    height: 250px; /* Un poco más de altura para que quepa el texto */
     overflow: hidden;
     transition: all 0.3s ease;
     border: 1px solid #444;
+    padding: 15px;
 }
 
 .Imagen {
-    height: 140px;      /* Tamaño más controlado */
-    width: 140px;
+    width: 100%; /* Que ocupe todo el ancho de la card */
+    height: 150px;
     object-fit: cover;
     border-radius: 10px;
-    margin-left: 15px;
-    border: none;
+    border: 2px solid #555;
+    margin: 0 0 10px 0; /* Centrada, sin margen a la izquierda */
 }
 
 /* Contenedor para los textos (puedes meter títulos y artistas aquí) */
@@ -94,33 +128,139 @@ input:hover{
     font-weight: bold;
     justify-content: center;
     align-items: center;
+    color: #cffcde;
 }
 .artistas{
     display: flex;
     font-weight: bold;
     justify-content: center;
     align-items: center;
+    color: rgb(255, 255, 255);
 }
 
 
 
-.audi{
+
+
+/* Contenedor principal del reproductor (barra inferior) */
+.audi {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* Altura fija para controlarla mejor */
+    background-color: #181818;
+    color: white;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    justify-content: center;
+    align-items: center; /* Centra los hijos horizontalmente */
+    justify-content: center; /* Centra los hijos verticalmente */
+    border-top: 1px solid #282828;
+    z-index: 1000; /* Para que siempre esté por encima de las cards */
+    padding: 10px 0;
+}
+
+#cancion {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #b3b3b3;
+    font-family: sans-serif;
+}
+
+/* Contenedor de botones */
+.controles {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    position: fixed;
-    bottom: 0;       /* Distancia desde el borde inferior */
-    left: 50%;          /* Lo mueve al centro horizontalmente */
-    transform: translateX(-50%); /* Lo ajusta exactamente a su propio centro */
-    height: 50px;
-    /* Estilos extra para que se vea */
-    background-color: #555555;
-    height: 15%;
+    gap: 20px; /* Espacio entre botones */
     
-    padding: 3px 20px;
-    border-radius: 5px;
-  
-    
+}
+
+/* Estilo de los botones */
+.play {
+    background: transparent;
+    border: none;
+    color: #b3b3b3; /* Gris claro por defecto */
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Resaltar el botón principal de Play/Pause */
+#play {
+    background-color: white;
+    color: black;
+    font-size: 20px;
+}
+
+/* Efectos al pasar el mouse */
+.play:hover {
+    color: white;
+    transform: scale(1.1);
+}
+
+#play:hover {
+    background-color: #1DB954; /* Cambia a verde al pasar el mouse */
+    color: white;
+}
+
+/* Ajuste del contenedor de volumen */
+.vol {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    width: 150px;
+}
+
+
+
+
+#volumen {
+  margin: 10px;
+  -webkit-appearance: none; /* Quita el estilo por defecto en Chrome/Safari */
+  width: 100%;
+  height: 6px;
+  background: #535353; /* Color de la barra de fondo */
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+/* 2. El "Botón" (Thumb) para Chrome, Edge y Safari */
+#volumen::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #1DB954; /* Verde brillante */
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#volumen::-webkit-slider-thumb:hover {
+  transform: scale(1.2); /* Se agranda un poco al pasar el mouse */
+  background: #1ed760;
+}
+
+/* 3. El "Botón" (Thumb) para Firefox */
+#volumen::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #1DB954;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+/* 4. Estilo de la barra cuando pasas el mouse */
+#volumen:hover {
+  background: #b3b3b3;
 }
