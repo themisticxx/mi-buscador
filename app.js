@@ -6,19 +6,75 @@ const a=document.getElementById('cancion')
 const API='https://auraproyect.share.zrok.io'
 const Play=document.getElementById('play')
 const Volumen=document.getElementById('volumen')
+const Descarga=document.getElementById("download")
+const Previus=document.getElementById('previus')
+const Next=document.getElementById('next')
 
-const Index=[]
 
-let contador=1
 
-audio.addEventListener('ended',(e)=>{
+
+
+let Index=[]
+let Nombres=[]
+let contador=0
+
+Previus.addEventListener('click',()=>{
+    contador--
     fetch(`${API}/get_url?id=${Index[contador]}`)
         .then(res=>res.json())
         .then(data=>{
-            console.log(data.url)
             audio.src=data.url
             audio.play()
-            contador=contador+1
+            a.innerText=Nombres[contador]
+            
+            
+            
+        })
+
+
+})
+
+Next.addEventListener('click',()=>{
+    contador++
+    fetch(`${API}/get_url?id=${Index[contador]}`)
+        .then(res=>res.json())
+        .then(data=>{
+            audio.src=data.url
+            audio.play()
+            a.innerText=Nombres[contador]
+            
+            
+            
+        })
+
+
+})
+
+
+Descarga.addEventListener('click',()=>{
+
+    const urlBackend = `${API}/download_proxy?id=${Index[contador]}`;
+
+    // 3. Abrir en una pestaña nueva o redirigir
+    // window.location.href forzará la descarga gracias a los headers que pusiste en Python
+    window.location.href = urlBackend;
+
+
+
+
+})
+
+audio.addEventListener('ended',(e)=>{
+    contador=contador+1
+    fetch(`${API}/get_url?id=${Index[contador]}`)
+        .then(res=>res.json())
+        .then(data=>{
+            
+            audio.src=data.url
+            audio.play()
+            a.innerText=Nombres[contador]
+            
+            
             
         })
 
@@ -51,7 +107,21 @@ function Targetas(nombre, imagen, artista,id) {
     const card = document.createElement('div')
     card.className = 'card'
     card.onclick=()=>{
-       
+        Index=[]
+
+        fetch(`${API}/related?id=${id}`)
+        .then(res=>res.json())
+        .then(data=>{
+            
+
+            for (i of data){
+                
+                Index.push(i.videoId)
+                Nombres.push(i.title)
+           }
+        })
+
+
         fetch(`${API}/get_url?id=${id}`)
         .then(res=>res.json())
         .then(data=>{
@@ -59,17 +129,11 @@ function Targetas(nombre, imagen, artista,id) {
             audio.src=data.url
             audio.play()
             a.innerText=`${nombre}--${artista}`
+            Index[0]=id
             
         })
 
-        fetch(`${API}/recommendations`)
-        .then(res=>res.json())
-        .then(data=>{
-
-            for (i of data){
-                Index.push(i.videoId)
-           }
-        })
+        
         
     }
     

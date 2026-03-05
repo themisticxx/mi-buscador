@@ -1,266 +1,267 @@
-body{
+/* --- ESTILOS GENERALES --- */
+body {
     background-color: #161616;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-audio {
-    filter: invert(100%) hue-rotate(180deg) brightness(1.5);
-    
-    width: 100%;
-    max-width: 600px;
-    height: 35px;
-}
-#formulario-input{
+/* --- BUSCADOR --- */
+#formulario-input {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
+
 #input {
-    width: 80%; /* Un poco más estrecho para que respire mejor */
+    width: 80%;
     max-width: 600px;
-    padding: 14px 25px; /* Más espacio a los lados para el texto */
-    
-    /* Colores estilo Dark Mode */
+    padding: 14px 25px;
     background-color: #282828; 
     color: white;
-    
-    /* Bordes más finos y elegantes */
     border: 1px solid #404040;
-    border-radius: 30px; /* Bordes bien redondeados */
-    
-    /* Espaciado */
-    margin-bottom: 30px;
-    margin-top: 20px;
-    
-    /* Tipografía */
+    border-radius: 30px;
     font-size: 16px;
-    outline: none; /* Quita el borde azul que pone el navegador por defecto */
+    outline: none;
     transition: all 0.3s ease;
-    background-color: #5a5a5a;
 }
 
-/* Efecto cuando pasas el mouse */
 #input:hover {
     background-color: #333333;
-    border-color: #555555;
-    transform: scale(1.03); /* Pequeño salto hacia arriba */
+    transform: scale(1.02);
 }
 
-/* Efecto cuando haces clic para escribir (Focus) */
 #input:focus {
     background-color: #121212;
-    border-color: #1DB954; /* El verde de Spotify que ya estás usando */
-    box-shadow: 0 0 10px rgba(29, 185, 84, 0.3); /* Resplandor verde suave */
+    border-color: #1DB954;
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
 }
 
-/* Estilo para el texto de ayuda (placeholder) */
-#input::placeholder {
-    color: #b3b3b3;
-    font-style: italic;
-}
-
-/* Centra todo en la pantalla */
+/* --- CONTENEDOR DE CARTAS (GRILLA) --- */
 #contenedor {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: center; /* Centra las cards hijos */
-    width: 95%;
     justify-content: center;
-    margin: 20px auto;
     gap: 20px;
-    padding-bottom: 150px;
+    width: 95%;
+    margin: 0 auto;
+    
+    padding-bottom: 120px; /* Espacio para que el reproductor no tape las cartas */
 }
 
 .card {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center; 
     background: #252525;
     border-radius: 15px;
-    width: calc(33.333% - 20px); 
-    min-width: 280px; /* Para que en pantallas muy pequeñas no se aplasten demasiado */
-    
-    box-sizing: border-box; /* Cambia el % por un tamaño fijo en pixeles */
-    height: 250px; /* Un poco más de altura para que quepa el texto */
+    width: 280px; 
+    height: 320px;
     overflow: hidden;
     transition: all 0.3s ease;
     border: 1px solid #444;
     padding: 15px;
+    box-sizing: border-box;
 }
 
-.Imagen {
-    width: 100%; /* Que ocupe todo el ancho de la card */
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #555;
-    margin: 0 0 10px 0; /* Centrada, sin margen a la izquierda */
-}
-
-/* Contenedor para los textos (puedes meter títulos y artistas aquí) */
-.info-musica {
-    display: flex;
-    flex-direction: column;
-    padding-left: 20px;
-    color: white;
-}
-.card:hover{
-    background: #505050;
-    transform: scale(1.09);
+.card:hover {
+    background: #333333;
+    transform: translateY(-5px);
 }
 .card:active{
     transform: scale(0.9);
+    background: #000000;
 }
 
-
-.Imagen{
-    
-    width: 30%;
-    height: 50%;
-    border: 2px rgb(158, 158, 158) solid;
-    border-radius: 20px;
-    margin: 10px;
-
+.Imagen {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
-.titulos{
-    display: flex;
+.titulos {
     font-weight: bold;
-    justify-content: center;
-    align-items: center;
     color: #cffcde;
-}
-.artistas{
-    display: flex;
-    font-weight: bold;
-    justify-content: center;
-    align-items: center;
-    color: rgb(255, 255, 255);
+    margin: 5px 0;
+    
 }
 
 
+.artistas {
+    color: #b3b3b3;
+    font-size: 0.9em;
+}
 
-
-
-/* Contenedor principal del reproductor (barra inferior) */
+/* --- REPRODUCTOR (BARRA INFERIOR CORREGIDA) --- */
 .audi {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100px; /* Altura fija para controlarla mejor */
+    height: 90px;
     background-color: #181818;
     color: white;
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Centra los hijos horizontalmente */
-    justify-content: center; /* Centra los hijos verticalmente */
-    border-top: 1px solid #282828;
-    z-index: 1000; /* Para que siempre esté por encima de las cards */
-    padding: 10px 0;
-}
-
-#cancion {
-    font-size: 14px;
-    margin-bottom: 10px;
-    color: #b3b3b3;
-    font-family: sans-serif;
-}
-
-/* Contenedor de botones */
-.controles {
-    display: flex;
-    flex-direction: row;
+    flex-direction: row; /* Elementos en línea */
     align-items: center;
-    gap: 20px; /* Espacio entre botones */
-    
+    justify-content: space-between; /* Separa izquierda, centro y derecha */
+    border-top: 1px solid #282828;
+    z-index: 1000;
+    padding: 0 30px;
+    box-sizing: border-box;
 }
 
-/* Estilo de los botones */
+/* 1. Sección Izquierda: Título */
+#cancion {
+    flex: 1; /* Ocupa el tercio izquierdo */
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+/* 2. Sección Central: Botones */
+.controles {
+    flex: 1; /* Ocupa el tercio central */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
 .play {
     background: transparent;
     border: none;
-    color: #b3b3b3; /* Gris claro por defecto */
+    color: #b3b3b3;
     font-size: 18px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
 }
 
-/* Resaltar el botón principal de Play/Pause */
 #play {
     background-color: white;
     color: black;
-    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
 }
 
-/* Efectos al pasar el mouse */
-.play:hover {
+#play:hover {
+    background-color: #1DB954;
     color: white;
     transform: scale(1.1);
 }
 
-#play:hover {
-    background-color: #1DB954; /* Cambia a verde al pasar el mouse */
-    color: white;
-}
-
-/* Ajuste del contenedor de volumen */
+/* 3. Sección Derecha: Volumen al final */
 .vol {
+    flex: 1; /* Ocupa el tercio derecho */
     display: flex;
+    justify-content: flex-end; /* Empuja el input al final */
     align-items: center;
-    margin-left: 20px;
-    width: 150px;
 }
-
-
-
 
 #volumen {
-  margin: 10px;
-  -webkit-appearance: none; /* Quita el estilo por defecto en Chrome/Safari */
-  width: 100%;
-  height: 6px;
-  background: #535353; /* Color de la barra de fondo */
-  border-radius: 5px;
-  outline: none;
-  cursor: pointer;
-  margin: 10px 0;
+    width: 120px;
+    height: 5px;
+    cursor: pointer;
+    accent-color: #1DB954; /* Color verde para navegadores modernos */
 }
 
-/* 2. El "Botón" (Thumb) para Chrome, Edge y Safari */
+/* Estilos específicos para el slider de volumen */
+#volumen {
+  -webkit-appearance: none;
+  background: #535353;
+  border-radius: 5px;
+  outline: none;
+}
+
 #volumen::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 15px;
-  height: 15px;
-  background: #1DB954; /* Verde brillante */
+  width: 12px;
+  height: 12px;
+  background: #fff;
   border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, background 0.2s ease;
+  cursor: pointer;
 }
 
 #volumen::-webkit-slider-thumb:hover {
-  transform: scale(1.2); /* Se agranda un poco al pasar el mouse */
-  background: #1ed760;
-}
-
-/* 3. El "Botón" (Thumb) para Firefox */
-#volumen::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
   background: #1DB954;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  cursor: pointer;
 }
 
-/* 4. Estilo de la barra cuando pasas el mouse */
-#volumen:hover {
-  background: #b3b3b3;
+/* Ocultar el tag de audio original */
+#audio {
+    display: none;
+}
+
+/* Estilo base del botón de descarga */
+.btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #282828; /* Fondo oscuro igual que el input */
+    color: #1DB954; /* Texto verde */
+    border: 1px solid #404040;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    width: fit-content;
+    margin-left: 10px;
+}
+
+
+.btn-download:hover {
+    background-color: #1DB954; /* Se vuelve verde */
+    color: white;             /* Texto blanco */
+    border-color: #1DB954;
+    transform: translateY(-2px); /* Pequeña elevación */
+    box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+    margin-left: 5px;
+}
+
+/* Efecto al hacer clic */
+.btn-download:active {
+    transform: scale(0.95);
+}
+
+/* Estilo del icono */
+.btn-download i {
+    font-size: 16px;
+}
+
+#next{
+    transition: transform 0.3s;
+}
+#next:hover{
+    transform: scale(1.3);
+    color: white;
+}
+#next:active{
+    transform: scale(0.9);
+}
+
+#previus{
+    transition: transform 0.3s;
+}
+#previus:hover{
+    transform: scale(1.3);
+    color: white;
+}
+#previus:active{
+    transform: scale(0.9);
 }

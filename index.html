@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AuroraMusic</title>
     <script src="app.js" defer></script>
     <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="music.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -28,18 +29,24 @@
     <div class="audi">
         <p id="cancion">Seleccione Una Cancion</p>
         <div class="controles">
-            <button class="play">
+            <button class="play" id="previus">
             <i class="fa-solid fa-backward"></i>
             </button>
             <button class="play" id="play">
             <i class="fa-solid fa-play"></i>
             </button>
 
-            <button class="play">
+            <button class="play" id="next">
                 <i class="fa-solid fa-forward"></i>
             </button>
             <div class="vol">
+            
             <input id="volumen" type="range" min="0" max="100" value="30">
+
+            <button class="btn-download" id="download">
+                <i class="fa-solid fa-download"></i>
+                
+            </button>
             </div>
         </div>
         <audio id="audio"></audio>
