@@ -37,25 +37,29 @@ body {
     box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
 }
 
-/* --- CONTENEDOR DE CARTAS (GRILLA) --- */
+
 #contenedor {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
     
-    padding-bottom: 120px; /* Espacio para que el reproductor no tape las cartas */
+    padding-bottom: 120px; 
 }
 
 .card {
+
+
+    box-shadow: 2px 2px 2px 2px rgba(119, 119, 119, 0.2) ;
+    
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center; 
-    background: #252525;
+    background: #221d1d;
     border-radius: 15px;
     width: 280px; 
     height: 320px;
@@ -96,7 +100,6 @@ body {
     font-size: 0.9em;
 }
 
-/* --- REPRODUCTOR (BARRA INFERIOR CORREGIDA) --- */
 .audi {
     position: fixed;
     bottom: 0;
@@ -106,18 +109,17 @@ body {
     background-color: #181818;
     color: white;
     display: flex;
-    flex-direction: row; /* Elementos en línea */
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between; /* Separa izquierda, centro y derecha */
+    justify-content: space-between; 
     border-top: 1px solid #282828;
     z-index: 1000;
     padding: 0 30px;
     box-sizing: border-box;
 }
 
-/* 1. Sección Izquierda: Título */
 #cancion {
-    flex: 1; /* Ocupa el tercio izquierdo */
+    flex: 1; 
     font-size: 14px;
     color: #ffffff;
     margin: 0;
@@ -127,9 +129,8 @@ body {
     font-weight: bold;
 }
 
-/* 2. Sección Central: Botones */
 .controles {
-    flex: 1; /* Ocupa el tercio central */
+    flex: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -163,11 +164,10 @@ body {
     transform: scale(1.1);
 }
 
-/* 3. Sección Derecha: Volumen al final */
 .vol {
-    flex: 1; /* Ocupa el tercio derecho */
+    flex: 1; 
     display: flex;
-    justify-content: flex-end; /* Empuja el input al final */
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -175,22 +175,25 @@ body {
     width: 120px;
     height: 5px;
     cursor: pointer;
-    accent-color: #1DB954; /* Color verde para navegadores modernos */
+    accent-color: #21af53; 
+    -webkit-appearance: none;
+    background: #535353;
+    border-radius: 5px;
+    outline: none;
 }
 
-/* Estilos específicos para el slider de volumen */
-#volumen {
-  -webkit-appearance: none;
-  background: #535353;
-  border-radius: 5px;
-  outline: none;
+@media (max-width:800px) {
+    #volumen{
+        display: none;
+    }
+    
 }
 
 #volumen::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 12px;
   height: 12px;
-  background: #fff;
+  background: #21af53;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -199,19 +202,17 @@ body {
   background: #1DB954;
 }
 
-/* Ocultar el tag de audio original */
 #audio {
     display: none;
 }
 
-/* Estilo base del botón de descarga */
 .btn-download {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background-color: #282828; /* Fondo oscuro igual que el input */
-    color: #1DB954; /* Texto verde */
+    background-color: #282828; 
+    color: #1DB954;
     border: 1px solid #404040;
     padding: 10px 20px;
     border-radius: 20px;
@@ -226,20 +227,19 @@ body {
 
 
 .btn-download:hover {
-    background-color: #1DB954; /* Se vuelve verde */
-    color: white;             /* Texto blanco */
+    background-color: #1DB954; 
+    color: white;             
     border-color: #1DB954;
-    transform: translateY(-2px); /* Pequeña elevación */
+    transform: translateY(-2px); 
     box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
     margin-left: 5px;
 }
 
-/* Efecto al hacer clic */
+
 .btn-download:active {
     transform: scale(0.95);
 }
 
-/* Estilo del icono */
 .btn-download i {
     font-size: 16px;
 }
