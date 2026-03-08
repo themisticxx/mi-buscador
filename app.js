@@ -1,183 +1,191 @@
-const formulario = document.getElementById('formulario-input')
-const input = document.getElementById('input')
-const contenedor = document.getElementById('contenedor')
-const audio=document.getElementById('audio')
-const a=document.getElementById('cancion')
-const API='https://auraproyect.share.zrok.io'
-const Play=document.getElementById('play')
-const Volumen=document.getElementById('volumen')
-const Descarga=document.getElementById("download")
-const Previus=document.getElementById('previus')
-const Next=document.getElementById('next')
+const input = document.getElementById('input');
+const contenedor = document.getElementById('contenedor');
+const carruselElem = document.getElementById('carruzel');
+const audio = document.getElementById('audio');
+const cancionTexto = document.getElementById('cancion');
+const PlayBtn = document.getElementById('play');
+const Volumen = document.getElementById('volumen');
+const Progreso = document.getElementById('progress-bar');
+const Previus = document.getElementById('previus');
+const Next = document.getElementById('next');
+const Descarga = document.getElementById("download");
 
+const API = 'https://auraproyect.share.zrok.io';
 
+// Listas para el manejo de la cola de reproducción
+let Index = [];   // Guardará los IDs (videoId)
+let Nombres = []; // Guardará los títulos de las canciones
+let contador = 0; // Índice de la canción actual en la lista
 
+// --- FUNCIONES DE CONTROL ---
 
-
-let Index=[]
-let Nombres=[]
-let contador=0
-
-Previus.addEventListener('click',()=>{
-    contador--
-    fetch(`${API}/get_url?id=${Index[contador]}`)
-        .then(res=>res.json())
-        .then(data=>{
-            audio.src=data.url
-            audio.play()
-            a.innerText=Nombres[contador]
-            
-            
-            
-        })
-
-
-})
-
-Next.addEventListener('click',()=>{
-    contador++
-    fetch(`${API}/get_url?id=${Index[contador]}`)
-        .then(res=>res.json())
-        .then(data=>{
-            audio.src=data.url
-            audio.play()
-            a.innerText=Nombres[contador]
-            
-            
-            
-        })
-
-
-})
-
-
-Descarga.addEventListener('click',()=>{
-
-    const urlBackend = `${API}/download_proxy?id=${Index[contador]}`;
-
-    // 3. Abrir en una pestaña nueva o redirigir
-    // window.location.href forzará la descarga gracias a los headers que pusiste en Python
-    window.location.href = urlBackend;
-
-
-
-
-})
-
-audio.addEventListener('ended',(e)=>{
-    contador=contador+1
-    fetch(`${API}/get_url?id=${Index[contador]}`)
-        .then(res=>res.json())
-        .then(data=>{
-            
-            audio.src=data.url
-            audio.play()
-            a.innerText=Nombres[contador]
-            
-            
-            
-        })
-
-
-    
-    
-})
-
-Volumen.addEventListener('input',(e)=>{
-    const valor=e.target.value;
-    audio.volume=valor/100
-})
-
-let reproduccion=true
-Play.addEventListener('click',()=>{
-    if (reproduccion==true){
-        audio.pause()
-        reproduccion=false
-        
+function actualizarProgreso() {
+    if (audio.duration) {
+        const value = (Progreso.value - Progreso.min) / (Progreso.max - Progreso.min) * 100;
+        // Efecto visual de la barra verde
+        Progreso.style.background = `linear-gradient(to right, #1DB954 ${value}%, #535353 ${value}%)`;
     }
-    else{
-        audio.play()
-        reproduccion=true
-    }
-    
-
-})
-
-function Targetas(nombre, imagen, artista,id) {
-    const card = document.createElement('div')
-    card.className = 'card'
-    card.onclick=()=>{
-        Index=[]
-
-        fetch(`${API}/related?id=${id}`)
-        .then(res=>res.json())
-        .then(data=>{
-            
-
-            for (i of data){
-                
-                Index.push(i.videoId)
-                Nombres.push(i.title)
-           }
-        })
-
-
-        fetch(`${API}/get_url?id=${id}`)
-        .then(res=>res.json())
-        .then(data=>{
-            console.log(data.url)
-            audio.src=data.url
-            audio.play()
-            a.innerText=`${nombre}--${artista}`
-            Index[0]=id
-            
-        })
-
-        
-        
-    }
-    
-    const infoContainer = document.createElement('div') 
-    infoContainer.className = 'informacion' 
-
-    const img = document.createElement('img')
-    img.src = imagen
-    img.className = 'Imagen'
-
-    const title = document.createElement('p')
-    title.className = 'titulos'
-    title.innerText = nombre
-
-    const artistas = document.createElement('p')
-    artistas.className = 'artistas'
-    artistas.innerText = artista
-
-  
-    infoContainer.appendChild(title)
-    infoContainer.appendChild(artistas)
-    
-    card.appendChild(img)
-    card.appendChild(infoContainer) 
-    
-    contenedor.appendChild(card)
 }
 
-input.addEventListener('keydown', function (event) {
+// Función principal para cargar y reproducir
+function reproducirCancion(indiceLista) {
+    if (indiceLista < 0 || indiceLista >= Index.length) return;
+
+    const id = Index[indiceLista];
+    const nombre = Nombres[indiceLista];
+    
+    contador = indiceLista; // Actualizamos el índice global
+    cancionTexto.innerText = nombre;
+
+    fetch(`${API}/get_url?id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+            audio.src = data.url;
+            audio.play();
+            PlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        })
+        .catch(err => console.error("Error al obtener la URL:", err));
+}
+
+// --- EVENTOS DE AUDIO ---
+
+audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+        const porcentaje = (audio.currentTime / audio.duration) * 100;
+        Progreso.value = porcentaje;
+        actualizarProgreso();
+    }
+});
+
+// Cuando la canción termina, pasa a la siguiente automáticamente
+audio.addEventListener('ended', () => {
+    if (contador + 1 < Index.length) {
+        reproducirCancion(contador + 1);
+    }
+});
+
+Progreso.addEventListener('input', () => {
+    const tiempo = (Progreso.value / 100) * audio.duration;
+    audio.currentTime = tiempo;
+    actualizarProgreso();
+});
+
+// --- BOTONES DE CONTROL ---
+
+PlayBtn.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        PlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+    } else {
+        audio.pause();
+        PlayBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+    }
+});
+
+Next.addEventListener('click', () => {
+    if (contador + 1 < Index.length) {
+        reproducirCancion(contador + 1);
+    }
+});
+
+Previus.addEventListener('click', () => {
+    if (contador - 1 >= 0) {
+        reproducirCancion(contador - 1);
+    }
+});
+
+Volumen.addEventListener('input', (e) => {
+    audio.volume = e.target.value / 100;
+});
+
+// --- GENERACIÓN DE INTERFAZ ---
+
+function crearTarjeta(nombre, imagen, artista, id, destino, esListaPropia) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+        <img src="${imagen}" class="Imagen">
+        <div class="info-card">
+            <p class="titulos">${nombre}</p>
+            <p class="artistas">${artista}</p>
+        </div>
+    `;
+
+    card.onclick = () => {
+        // Al hacer click, cargamos la canción y actualizamos la cola de reproducción
+        // con la lista actual donde se hizo click
+        reproducirCancion(esListaPropia);
+    };
+    
+    destino.appendChild(card);
+}
+
+// --- BÚSQUEDA ---
+
+input.addEventListener('keydown', (event) => {
     if (event.key === "Enter") {
-        contenedor.innerText = ''
-        
-        fetch(`${API}/search?q=${input.value}`)
+        const query = input.value;
+        if (!query) return;
+
+        contenedor.innerHTML = '';
+        carruselElem.innerHTML = '';
+        Index = [];
+        Nombres = [];
+
+        fetch(`${API}/search?q=${query}`)
             .then(res => res.json())
             .then(respuesta => {
-                input.value=''
-                for (let i of respuesta) {
-                    let nombre = i.title
-                    let id = i.videoId
-                    let artista = i.artist
-                    let imagen = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
-
-                    Targetas(nombre, imagen, artista,id)
-                }
-            })
+                input.value = '';
+                
+                // Llenamos nuestras listas globales para que Next/Previus funcionen
+                respuesta.forEach((item, i) => {
+                    Index.push(item.videoId);
+                    Nombres.push(item.title);
+                    
+                    const imagen = `https://img.youtube.com/vi/${item.videoId}/maxresdefault.jpg`;
+                    
+                    // Repartimos entre carrusel y lista inferior
+                    if (i < 16) {
+                        crearTarjeta(item.title, imagen, item.artist, item.videoId, carruselElem, i);
+                    } else {
+                        crearTarjeta(item.title, imagen, item.artist, item.videoId, contenedor, i);
+                    }
+                });
+            });
     }
-})
+});
+
+// Botón de descarga
+Descarga.addEventListener('click', () => {
+    if (audio.src) {
+        const link = document.createElement('a');
+        link.href = audio.src;
+        link.download = `${cancionTexto.innerText}.mp3`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert("Primero selecciona una canción");
+    }
+});
+
+function scrollCarrusel(direccion) {
+    const carrusel = document.getElementById('carruzel');
+    
+    if (!carrusel) {
+        console.error("No se encontró el elemento #carruzel");
+        return;
+    }
+
+    // Calculamos el ancho de una tarjeta (210px) + el gap (20px)
+    // Multiplicamos por 2 para que avance de dos en dos
+    const tarjetaAncho = 230; 
+    const desplazamiento = tarjetaAncho * 2 * direccion;
+
+    console.log("Moviendo carrusel:", desplazamiento, "px");
+
+    carrusel.scrollBy({
+        left: desplazamiento,
+        behavior: 'smooth'
+    });
+}
