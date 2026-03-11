@@ -115,6 +115,7 @@ body {
 
 /* --- SECCIÓN 2: CONTENEDOR INFERIOR (Formato Lista) --- */
 #contenedor {
+    
     display: flex;
     flex-direction: row;
     flex-wrap: wrap; 
@@ -151,7 +152,17 @@ body {
     margin-right: 15px;
 }
 
-/* --- TEXTOS --- */
+@media (max-width:720px) {
+    #volumen {
+    display: none;
+    
+    }
+    #btnSonido{
+        display: none;
+    }
+    
+    
+}
 .titulos { 
     font-weight: 500; 
     margin: 0; 
@@ -159,14 +170,17 @@ body {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
+    width: 100%;
+
 }
 
-#contenedor .titulos { font-size: 16px; flex: 1; font-weight: bold;}
+#contenedor .titulos { font-size: 16px; flex: 1; font-weight: bold; width: 390px}
 
 .artistas { 
     color: #b3b3b3; 
     font-size: 12px; 
     margin-top: 4px;
+    
 }
 
 /* --- REPRODUCTOR (Barra inferior) --- */
