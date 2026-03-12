@@ -140,6 +140,8 @@ body {
 
 @media (max-width:720px) {
     #contenedor {
+        padding: 0;
+        margin: 0;
         display: flex;
         flex-direction: column;
         
