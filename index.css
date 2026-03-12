@@ -139,12 +139,19 @@ body {
 }
 
 @media (max-width:720px) {
-    #contenedor .card{
+    #contenedor {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         
         width: 50%;
+    }
+
+    #contenedor .card{
+        display: flex;
+        flex-direction: column;
+        width: 100px;
     }
     
 }
